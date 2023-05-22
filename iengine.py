@@ -84,7 +84,6 @@ def bc_recursive(KB, query, inferred):
                 return True, inferred_symbols + [query]
         return False, []
 
-
 def truth_table(knowledge_base, query):
     # Implement Truth Table inference
     pass
@@ -113,4 +112,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
