@@ -106,7 +106,10 @@ def main():
         print('Invalid method')
         return
 
-    print('YES' if result else 'NO', ':', ', '.join(inferred) if inferred else 'None')
+    if result:
+        print('YES :', ', '.join(inferred) if inferred else 'None')
+    else:
+        print('NO')
 
 
 
