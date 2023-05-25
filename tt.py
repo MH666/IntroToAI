@@ -73,7 +73,7 @@ def generateTT(kb):
 
 # Ask the truth table the query
 def truth_table(kb, query):
-    count = 0
+    model_count = 0
     tt = generateTT(kb)
     kb = list(tt)[-1]  # Get the final statement from the truth table
 
@@ -84,10 +84,10 @@ def truth_table(kb, query):
                 print("NO")
                 return
             else:
-                count += 1
+                model_count += 1
     
     # Print the number of true instances of the query
-    print(f"YES: {count}")
+    print(f"YES: {model_count}")
     return
 
 
