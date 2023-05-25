@@ -26,19 +26,6 @@ def parse_input(filename):
 
     return knowledge_base, query
 
-def parse_input_tt(filename):
-    with open(filename, 'r') as f:
-        content = [line.strip() for line in f.read().split('\n')]
-
-    tell_index = content.index('TELL')
-    ask_index = content.index('ASK')
-
-    raw_knowledge_base = content[tell_index+1:ask_index]
-    query = content[ask_index+1:][0]
-
-    # Just pass the raw knowledge base as is, without parsing
-    return raw_knowledge_base, query, filename
-
 def forward_chaining(KB, query):
     count = {}  # count of the number of unknowns in each implication
     inferred = {}  # which symbols have been inferred
@@ -102,28 +89,38 @@ def bc_recursive(KB, query, inferred):
 def main():
     method = sys.argv[1]
     filename = sys.argv[2]
+    
+    kb, query = tt.readKB(filename)
+
 
     if method == 'TT':
-        knowledge_base, query, filename = parse_input_tt(filename)
-        result, inferred = tt.truth_table(filename)
+        tt.truth_table(kb, query)
     else:
         knowledge_base, query = parse_input(filename)
         if method == 'FC':
             result, inferred = forward_chaining(knowledge_base, query)
+            if result:
+                if isinstance(inferred, int):  # check if inferred is an int
+                    print('YES :', inferred)
+                else:
+                    print('YES :', ', '.join(inferred) if inferred else 'None')
+            else:
+                print('NO')
+
         elif method == 'BC':
             result, inferred = backward_chaining(knowledge_base, query)
             inferred.reverse()
+            if result:
+                if isinstance(inferred, int):  # check if inferred is an int
+                    print('YES :', inferred)
+                else:
+                    print('YES :', ', '.join(inferred) if inferred else 'None')
+            else:
+                print('NO')
         else:
             print('Invalid method')
             return
 
-    if result:
-        if isinstance(inferred, int):  # check if inferred is an int
-            print('YES :', inferred)
-        else:
-            print('YES :', ', '.join(inferred) if inferred else 'None')
-    else:
-        print('NO')
 
 if __name__ == '__main__':
     main()
